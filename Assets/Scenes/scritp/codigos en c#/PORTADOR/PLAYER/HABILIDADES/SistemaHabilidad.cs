@@ -4,16 +4,42 @@ using UnityEngine;
 public class SistemaHabilidad : MonoBehaviour
 {
     public List<Habilidad> habilidades = new List<Habilidad>();
-    public int numHabilidades = 0;
+    private Portadores portador;
 
-    public int Use (int targetAbility)
+    public void Inicializar(Portadores portador)
+    {
+        this.portador = portador;
+        
+        // Inicializar habilidades existentes
+        foreach (Habilidad hab in habilidades)
+        {
+            hab.Inicializar(portador);
+        }
+    }
+
+    public void AgregarHabilidad(Habilidad habilidad)
+    {
+        if (habilidades.Count < 3 && !habilidades.Contains(habilidad))
+        {
+            habilidad.Inicializar(portador);
+            habilidades.Add(habilidad);
+        }
+    }
+
+    public int Use(int targetAbility)
     {
         if (targetAbility >= 0 && targetAbility < habilidades.Count)
         {
             return habilidades[targetAbility].Use();
         }
-        
-        Debug.LogWarning("Índice de habilidad fuera de rango");
-        return 1;
+        return 0;
+    }
+
+    public void ActualizarCooldowns(float deltaTime)
+    {
+        foreach (Habilidad hab in habilidades)
+        {
+            hab.ActualizarCooldown(deltaTime);
+        }
     }
 }

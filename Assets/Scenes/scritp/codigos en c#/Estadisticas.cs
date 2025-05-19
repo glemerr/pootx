@@ -1,20 +1,40 @@
 using UnityEngine;
 
-public class Estadistica : MonoBehaviour
+public class Estadistica
 {
-    public int currentValue;
-    public int maxValue;
-    public int minValue;
+    [SerializeField] private int minValue;
+    [SerializeField] private int maxValue;
+    private int currentValue;
 
-    public void Initialize(int min, int max, int current)
+    public Estadistica(int minValue, int maxValue)
     {
-        minValue = min;
-        maxValue = max;
-        currentValue = Mathf.Clamp(current, minValue, maxValue);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.currentValue = maxValue;
     }
 
-    public void ModifyValue(int amount)
+    public int GetCurrentValue()
     {
-        currentValue = Mathf.Clamp(currentValue + amount, minValue, maxValue);
+        return currentValue;
+    }
+
+    public void SetCurrentValue(int value)
+    {
+        currentValue = Mathf.Clamp(value, minValue, maxValue);
+    }
+
+    public int GetMaxValue()
+    {
+        return maxValue;
+    }
+
+    public int GetMinValue()
+    {
+        return minValue;
+    }
+
+    public float GetPercentage()
+    {
+        return (float)currentValue / maxValue;
     }
 }

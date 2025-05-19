@@ -1,17 +1,54 @@
 using UnityEngine;
+using System;
 
-public class SistemaVida : Estadistica
+public class SistemaVida
+{
+    private Estadistica estadisticaVida;
+    public event Action OnMuerte;
 
-{ 
-
-    public bool TakeDamage(int amount)
+    public SistemaVida(int vidaMaxima)
     {
-        currentValue = Mathf.Clamp(currentValue - amount, minValue, maxValue);
-        return currentValue <= minValue;
+        estadisticaVida = new Estadistica(0, vidaMaxima);
     }
 
-    public void Heal(int amount)
+    public int GetVidaActual()
     {
-        currentValue = Mathf.Clamp(currentValue + amount, minValue, maxValue);
+        return estadisticaVida.GetCurrentValue();
+    }
+
+    public int GetVidaMaxima()
+    {
+        return estadisticaVida.GetMaxValue();
+    }
+
+    public void SetVidaActual(int value)
+    {
+        int vidaAnterior = estadisticaVida.GetCurrentValue();
+        estadisticaVida.SetCurrentValue(value);
+        
+        if (vidaAnterior > 0 && estadisticaVida.GetCurrentValue() <= 0)
+        {
+            OnMuerte?.Invoke();
+        }
+    }
+
+    public void RecibirDaño(int cantidad)
+    {
+        SetVidaActual(GetVidaActual() - cantidad);
+    }
+
+    public void RecibirCuracion(int cantidad)
+    {
+        SetVidaActual(GetVidaActual() + cantidad);
+    }
+
+    public bool EstaVivo()
+    {
+        return GetVidaActual() > 0;
+    }
+
+    public float GetPorcentajeVida()
+    {
+        return estadisticaVida.GetPercentage();
     }
 }

@@ -1,31 +1,23 @@
 using UnityEngine;
 
+// Jugador2: Usa energía para activar habilidades
 public class Jugador2 : Jugable
 {
-    private void Awake()
-    {
-        // Inicializar componentes si no existen
-        if (energia == null)
-        {
-            energia = gameObject.AddComponent<SistemaEnergia>();
-            energia.Initialize(0, 100, 100);
-        }
-
-        if (vida == null)
-        {
-            vida = gameObject.AddComponent<SistemaVida>();
-            vida.Initialize(0, 100, 100);
-        }
-
-        if (sistemaHabilidades == null)
-        {
-            sistemaHabilidades = gameObject.AddComponent<SistemaHabilidad>();
-        }
-    }
-
+    [SerializeField] private int[] costesEnergia = new int[3] { 15, 30, 25 };
+    
     public override int Use(int targetAbility)
     {
-        Debug.Log($"Jugador2 usa habilidad {targetAbility}");
-        return base.Use(targetAbility);
+        if (targetAbility >= 0 && targetAbility < costesEnergia.Length && 
+            sistemaHabilidades != null && targetAbility < sistemaHabilidades.habilidades.Count)
+        {
+            Habilidad hab = sistemaHabilidades.habilidades[targetAbility];
+            
+            if (hab.PuedeUsar() && ConsumirEnergia(costesEnergia[targetAbility]))
+            {
+                // Usar habilidad (la energía ya se consumió)
+                return sistemaHabilidades.Use(targetAbility);
+            }
+        }
+        return 0;
     }
 }

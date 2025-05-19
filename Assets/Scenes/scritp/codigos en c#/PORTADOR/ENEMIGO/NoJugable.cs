@@ -1,11 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class NoJugable : portadores
+public class NoJugable : Portadores
 {
-    public override void Initialize()
+    [SerializeField] private GameObject efectoMuerte;
+    
+    protected override void AlMorir()
     {
-        base.Initialize();
-        // Inicializa el sistema de vida del enemigo
-        vida.Initialize(0, 100, 100);
-    }
-}
+        base.AlMorir();
+        
+        // Efecto visual
+        if (efectoMuerte != null)
+        {
+            Instantiate(efectoMuerte, transform.position, Quaternion.identity);
+        }
+        
+        // Destruir objeto después de un tiempo
+        Destroy(gameObject, 1f);
+    } 
+ }
