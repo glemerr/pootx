@@ -17,7 +17,7 @@ public class Proyectil : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = transform.forward * velocidad;
+            rb.linearVelocity = transform.forward * velocidad;
         }
         
         // Destruir después de un tiempo
@@ -26,16 +26,23 @@ public class Proyectil : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Portadores portador = other.GetComponent<Portadores>();
+
         if (impactado || other.gameObject.layer == capaOrigen)
             return;
 
         impactado = true;
+
         
         // Aplicar daño si es un portador
-        Portadores portador = other.GetComponent<Portadores>();
+        
         if (portador != null)
         {
+            if(other.CompareTag("Enemy"))
+            {
             portador.RecibirDaño(daño);
+            }
+            
         }
         
         // Efecto de impacto (opcional)

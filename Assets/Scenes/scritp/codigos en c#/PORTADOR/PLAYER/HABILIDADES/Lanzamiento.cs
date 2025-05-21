@@ -30,7 +30,7 @@ public class Lanzamiento : Habilidad
                 Rigidbody rb = proyectil.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    rb.velocity = punto.forward * velocidad;
+                    rb.linearVelocity = punto.forward * velocidad;
                 }
 
                 // Destruir después de un tiempo

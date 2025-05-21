@@ -7,7 +7,7 @@ public enum TipoRegeneracion
     Ninguna
 }
 
-public class SistemaEnergia
+public class SistemaEnergia : MonoBehaviour
 {
     private Estadistica estadisticaEnergia;
     private TipoRegeneracion tipoRegeneracion;
